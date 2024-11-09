@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { db } from "../../firebase/index";
+import { db } from "@/app/firebsae/index";
 import { doc, getDoc } from "firebase/firestore";
 import { FaPlay } from "react-icons/fa";
 import { FiFilm } from "react-icons/fi";

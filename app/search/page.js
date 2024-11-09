@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { db } from "../firebsae/index";
+import { db } from "../firebase"; // Correct import path
 import { collection, getDocs, query, where } from "firebase/firestore";
+import Image from "next/image"; // Optional, for image optimization
 
 const SearchPage = () => {
   const searchParams = useSearchParams();
@@ -14,6 +15,8 @@ const SearchPage = () => {
 
   useEffect(() => {
     const fetchMovies = async () => {
+      if (!queryParam) return; // Early return if no query
+
       try {
         const moviesCollection = collection(db, "movies");
 
@@ -37,9 +40,7 @@ const SearchPage = () => {
       }
     };
 
-    if (queryParam) {
-      fetchMovies();
-    }
+    fetchMovies();
   }, [queryParam]);
 
   if (loading) return <p className="text-center text-lg py-10">Searching for movies...</p>;
@@ -54,9 +55,12 @@ const SearchPage = () => {
         {movies.map((movie) => (
           <Link href={`/movie/${movie.id}`} key={movie.id}>
             <div className="movie-item cursor-pointer transition-transform transform hover:scale-105">
-              <img
-                src={movie.poster}
+              {/* Using Next.js Image Component for optimized loading */}
+              <Image
+                src={movie.poster || "/default-image.jpg"} // Fallback image in case poster is missing
                 alt={`${movie.name} poster`}
+                width={300} // Specify width for Next.js Image
+                height={400} // Specify height for Next.js Image
                 className="movie-poster w-full h-60 sm:h-72 md:h-80 object-cover rounded-lg shadow-lg"
               />
               <h3 className="text-lg font-medium mt-2 text-center text-gray-800 dark:text-gray-200">

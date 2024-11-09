@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { db } from "../firebsae/index";
+import Image from "next/image";
+import { db } from "../firebase/index";
 import { collection, getDocs } from "firebase/firestore";
 import Head from "next/head";
 
@@ -24,9 +25,8 @@ const Page = () => {
         setMovies(movieList);
       } catch (error) {
         console.error("Error fetching movies:", error);
-      } finally {
-        setLoading(false);
       }
+      setLoading(false);
     };
 
     fetchMovies();
@@ -49,45 +49,37 @@ const Page = () => {
   return (
     <div className="relative">
       <Head>
-        <title>Mi player - Discover Popular Movies and TV Shows</title>
+        <title>Mi Player - Discover Popular Movies and TV Shows</title>
         <meta
           name="description"
           content="Explore a vast collection of movies and TV shows on Mi Player. Discover trending titles, watch trailers, and enjoy your favorite genres."
         />
         <meta name="robots" content="index, follow" />
-        <meta property="og:title" content="Mi Player - Discover Popular Movies and TV Shows" />
-        <meta
-          property="og:description"
-          content="Explore a vast collection of movies and TV shows on Mi player. Discover trending titles, watch trailers, and enjoy your favorite genres."
-        />
-        <meta property="og:image" content={currentMovie?.poster || "/default-image.jpg"} />
-        <meta property="og:url" content="https://www.movieapp.com/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="MovieApp - Discover Popular Movies and TV Shows" />
-        <meta
-          name="twitter:description"
-          content="Explore a vast collection of movies and TV shows on MovieApp. Discover trending titles, watch trailers, and enjoy your favorite genres."
-        />
-        <meta name="twitter:image" content={currentMovie?.poster || "/default-image.jpg"} />
+        {currentMovie && (
+          <>
+            <meta property="og:title" content={currentMovie.name} />
+            <meta
+              property="og:description"
+              content={`Watch ${currentMovie.name} and explore more trending movies on Mi Player.`}
+            />
+            <meta
+              property="og:image"
+              content={currentMovie.poster || "/default-image.jpg"}
+            />
+            <meta property="og:url" content="https://www.movieapp.com/" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={currentMovie.name} />
+            <meta
+              name="twitter:description"
+              content={`Watch ${currentMovie.name} on Mi Player.`}
+            />
+            <meta
+              name="twitter:image"
+              content={currentMovie.poster || "/default-image.jpg"}
+            />
+          </>
+        )}
         <link rel="canonical" href="https://www.movieapp.com/" />
-
-        {/* Structured Data for SEO (JSON-LD) */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Movie",
-            name: currentMovie?.name || "Mi player",
-            image: currentMovie?.poster || "/default-image.jpg",
-            description: "Explore a vast collection of movies and TV shows on Mi Player.",
-            genre: "Action, Drama, Comedy, Thriller",
-            url: "https://www.movieapp.com/",
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.5",
-              reviewCount: "250",
-            },
-          })}
-        </script>
       </Head>
 
       {/* Hero Section */}
@@ -95,7 +87,7 @@ const Page = () => {
         <div
           className="hero h-[80vh] bg-cover bg-center flex items-center justify-center text-white relative z-10"
           style={{
-            backgroundImage: `url(${currentMovie.poster})`,
+            backgroundImage: `url(${currentMovie.poster || "/default-image.jpg"})`,
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
@@ -112,10 +104,14 @@ const Page = () => {
           {movies.map((movie) => (
             <Link href={`/movie/${movie.id}`} key={movie.id}>
               <div className="movie-item cursor-pointer hover:scale-105 transition-transform">
-                <img
-                  src={movie.poster}
+                <Image
+                  src={movie.poster || "/default-image.jpg"}
                   alt={`${movie.name} poster`}
+                  width={300}
+                  height={400}
                   className="movie-poster w-full h-60 object-cover rounded-lg shadow-lg"
+                  placeholder="blur"
+                  blurDataURL="/default-image.jpg"
                 />
                 <h3 className="text-lg font-medium mt-2 text-center">{movie.name}</h3>
               </div>
@@ -123,7 +119,6 @@ const Page = () => {
           ))}
         </div>
       </div>
-      
     </div>
   );
 };

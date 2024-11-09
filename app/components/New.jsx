@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebsae/index"; // Corrected Firebase import
 import { collection, getDocs } from "firebase/firestore";
 import Link from "next/link"; // Import Link from Next.js for routing
+import Image from "next/image"; // Import Image from Next.js for optimized image handling
 
 const New = () => {
   const [movies, setMovies] = useState([]);
@@ -41,11 +42,16 @@ const New = () => {
           {movies.map((movie) => (
             <Link href={`/movie/${movie.id}`} key={movie.id}>
               <div className="movie-item block text-center cursor-pointer">
-                <img
-                  src={movie.poster}
-                  alt={`${movie.name} poster`}
-                  className="movie-poster w-full h-auto rounded-lg shadow-lg"
-                />
+                {/* Use next/image for optimized image loading */}
+                <div className="relative w-full h-60">
+                  <Image
+                    src={movie.poster || "/default-image.jpg"} // Use a fallback image if movie.poster is missing
+                    alt={`${movie.name} poster`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg shadow-lg"
+                  />
+                </div>
                 <h3 className="mt-2 text-lg text-white">{movie.name}</h3>
               </div>
             </Link>

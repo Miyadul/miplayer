@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { db } from "../../firebsae/index";
+import Image from "next/image";
+import { db } from "../../firebase/index";
 import { doc, getDoc } from "firebase/firestore";
 import { FaPlay } from "react-icons/fa";
 import { FiFilm } from "react-icons/fi";
@@ -10,7 +11,7 @@ import { BsClock } from "react-icons/bs";
 import Head from "next/head";
 
 export default function MovieDetail({ params }) {
-  const { id } = React.use(params);
+  const { id } = params;
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
@@ -40,15 +41,19 @@ export default function MovieDetail({ params }) {
   const playVideoFullScreen = () => {
     setShowVideo(true);
     if (videoRef.current) {
-      videoRef.current.play();
-      if (videoRef.current.requestFullscreen) {
-        videoRef.current.requestFullscreen();
-      } else if (videoRef.current.webkitRequestFullscreen) {
-        videoRef.current.webkitRequestFullscreen();
-      } else if (videoRef.current.mozRequestFullScreen) {
-        videoRef.current.mozRequestFullScreen();
-      } else if (videoRef.current.msRequestFullscreen) {
-        videoRef.current.msRequestFullscreen();
+      try {
+        videoRef.current.play();
+        if (videoRef.current.requestFullscreen) {
+          videoRef.current.requestFullscreen();
+        } else if (videoRef.current.webkitRequestFullscreen) {
+          videoRef.current.webkitRequestFullscreen();
+        } else if (videoRef.current.mozRequestFullScreen) {
+          videoRef.current.mozRequestFullScreen();
+        } else if (videoRef.current.msRequestFullscreen) {
+          videoRef.current.msRequestFullscreen();
+        }
+      } catch (error) {
+        console.error("Error entering full screen:", error);
       }
     }
   };
@@ -59,56 +64,19 @@ export default function MovieDetail({ params }) {
   return (
     <>
       <Head>
-        <title>{movie.name} - Watch Online | Mi player</title>
+        <title>{movie.name} - Watch Online | Mi Player</title>
         <meta
           name="description"
           content={`${movie.name} directed by ${movie.producer}. ${movie.description}`}
         />
-        <meta name="robots" content="index, follow" />
-        <meta property="og:title" content={`${movie.name} - Watch Online | Mi player`} />
+        <meta property="og:title" content={`${movie.name} - Watch Online | Mi Player`} />
         <meta
           property="og:description"
           content={`${movie.name} directed by ${movie.producer}. ${movie.description}`}
         />
         <meta property="og:image" content={movie.poster || "/default-image.jpg"} />
-        <meta property="og:type" content="video.movie" />
         <meta property="og:url" content={`https://www.movieapp.com/movie/${id}`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${movie.name} - Watch Online | MovieApp`} />
-        <meta
-          name="twitter:description"
-          content={`${movie.name} directed by ${movie.producer}. ${movie.description}`}
-        />
-        <meta name="twitter:image" content={movie.poster || "/default-image.jpg"} />
         <link rel="canonical" href={`https://www.movieapp.com/movie/${id}`} />
-
-        {/* Structured Data for SEO (JSON-LD) */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Movie",
-            name: movie.name,
-            image: movie.poster,
-            description: movie.description,
-            director: {
-              "@type": "Person",
-              name: movie.producer,
-            },
-            datePublished: movie.year,
-            genre: movie.category,
-            duration: movie.duration,
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.5",
-              reviewCount: "200",
-            },
-            url: `https://www.movieapp.com/movie/${id}`,
-            potentialAction: {
-              "@type": "WatchAction",
-              target: `https://www.movieapp.com/movie/${id}`,
-            },
-          })}
-        </script>
       </Head>
 
       <div
@@ -118,10 +86,14 @@ export default function MovieDetail({ params }) {
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
         <div className="relative flex flex-col md:flex-row items-start max-w-5xl w-full z-10 p-5 md:p-10 bg-opacity-70 bg-neutral-800 rounded-lg shadow-lg">
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
-            <img
-              src={movie.poster}
+            <Image
+              src={movie.poster || "/default-image.jpg"}
               alt={`${movie.name} poster`}
-              className="w-full rounded-lg shadow-lg"
+              width={300}
+              height={450}
+              className="rounded-lg shadow-lg"
+              placeholder="blur"
+              blurDataURL="/default-image.jpg"
             />
           </div>
 
@@ -165,4 +137,3 @@ export default function MovieDetail({ params }) {
     </>
   );
 }
- 

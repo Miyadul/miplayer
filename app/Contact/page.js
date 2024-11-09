@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { db } from "../firebase/index"; // Corrected Firebase import
+import { db } from "@/app/firebsae/index";
 import { collection, addDoc } from "firebase/firestore";
 
 const Contact = () => {

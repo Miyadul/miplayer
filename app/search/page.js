@@ -1,4 +1,5 @@
-"use client";
+// src/components/SearchPage.jsx
+"use client"; // Ensure this is a client-side component
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -46,11 +47,17 @@ const SearchPage = () => {
   if (loading) return <p className="text-center text-lg py-10">Searching for movies...</p>;
 
   if (movies.length === 0)
-    return <p className="text-center text-lg py-10">No movies found for "{queryParam}".</p>;
+    return (
+      <p className="text-center text-lg py-10">
+        No movies found for &quot;{queryParam}&quot;.
+      </p>
+    );
 
   return (
     <div className="search-page p-4">
-      <h2 className="text-3xl font-bold mb-6 text-center">Search Results for: "{queryParam}"</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        Search Results for: &quot;{queryParam}&quot;
+      </h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {movies.map((movie) => (
           <Link href={`/movie/${movie.id}`} key={movie.id}>

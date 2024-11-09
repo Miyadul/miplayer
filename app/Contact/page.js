@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { db } from "../firebsae/index";
+import { db } from "../firebase/index"; // Corrected Firebase import
 import { collection, addDoc } from "firebase/firestore";
 
 const Contact = () => {
@@ -55,7 +55,7 @@ const Contact = () => {
     <div className="contact-page px-4 py-8 text-gray-800">
       <h1 className="text-4xl font-bold text-center mb-6">Contact Us</h1>
       <p className="text-center text-lg mb-8">
-        We'd love to hear from you! Please fill out the form below to get in touch.
+        We&apos;d love to hear from you! Please fill out the form below to get in touch.
       </p>
 
       {/* Contact Form */}

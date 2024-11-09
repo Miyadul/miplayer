@@ -7,7 +7,7 @@ const page = () => {
   return (
     <div className="about-page px-4 py-8 text-gray-800">
       <Head>
-        <title>About Mi player - Discover Free Movies and TV Shows</title>
+        <title>About Mi Player - Discover Free Movies and TV Shows</title>
         <meta
           name="description"
           content="Learn more about Mi Player, your one-stop destination for exploring movies and TV shows across different genres."
@@ -33,7 +33,7 @@ const page = () => {
       <div className="hero bg-gray-900 text-white py-20 text-center">
         <h1 className="text-4xl md:text-5xl font-bold">About Mi Player</h1>
         <p className="text-lg md:text-xl mt-4">
-          Discover the ultimate new collection of free  movies and TV shows, right at your fingertips.
+          Discover the ultimate new collection of free movies and TV shows, right at your fingertips.
         </p>
       </div>
 
@@ -41,7 +41,7 @@ const page = () => {
       <section className="container mx-auto py-10">
         <h2 className="text-3xl font-semibold text-center mb-6">Who We Are</h2>
         <p className="text-lg leading-relaxed text-center max-w-2xl mx-auto">
-        Mi Player is your one-stop destination for exploring a diverse range of free movies and TV shows. Our platform is designed to provide you with the latest and most popular titles, all in one place. Whether you love action, drama, comedy, or thrillers, we have something for everyone.
+          Mi Player is your one-stop destination for exploring a diverse range of free movies and TV shows. Our platform is designed to provide you with the latest and most popular titles, all in one place. Whether you love action, drama, comedy, or thrillers, we have something for everyone.
         </p>
       </section>
 
@@ -79,7 +79,7 @@ const page = () => {
       <section className="container mx-auto py-10">
         <h2 className="text-3xl font-semibold text-center mb-6">Get in Touch</h2>
         <p className="text-lg text-center mb-4">
-          Have any questions or feedback? We'd love to hear from you.
+          Have any questions or feedback? We&apos;d love to hear from you.
         </p>
         <div className="text-center">
           <a

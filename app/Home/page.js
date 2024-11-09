@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { db } from "../firebase/index";
+import { db } from "@/app/firebsae/index";
 import { collection, getDocs } from "firebase/firestore";
 import Head from "next/head";
 
